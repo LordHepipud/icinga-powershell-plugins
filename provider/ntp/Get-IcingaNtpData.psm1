@@ -9,10 +9,10 @@ function Get-IcingaNtpData()
     );
 
     if ([string]::IsNullOrEmpty($Server)) {
-	Exit-IcingaThrowException -ExceptionType 'Configuration' `
-		-ExceptionThrown $IcingaExceptions.Configuration.PluginArgumentMissing `
-		-CustomMessage 'Plugin argument "-Server" is empty' `
-		-Force;
+        Exit-IcingaThrowException -ExceptionType 'Configuration' `
+            -ExceptionThrown $IcingaExceptions.Configuration.PluginArgumentMissing `
+            -CustomMessage 'Plugin argument "-Server" is empty' `
+            -Force;
     }
 
     $StartOfEpoch = New-Object -TypeName DateTime -ArgumentList ( 
@@ -25,9 +25,9 @@ function Get-IcingaNtpData()
     # Request Header: [00=No Leap Warning; 011=Version 3; 011=Client Mode]; 00011011 = 0x1B
     $NtpData[0] = 0x1B;
     $Socket     = New-Object -TypeName Net.Sockets.Socket -ArgumentList (
-	[Net.Sockets.AddressFamily]::InterNetwork,
-	[Net.Sockets.SocketType]::Dgram,
- 	[Net.Sockets.ProtocolType]::Udp
+        [Net.Sockets.AddressFamily]::InterNetwork,
+        [Net.Sockets.SocketType]::Dgram,
+        [Net.Sockets.ProtocolType]::Udp
     );
 
     $Socket.SendTimeOut    = ($Timeout * 1000.0);
