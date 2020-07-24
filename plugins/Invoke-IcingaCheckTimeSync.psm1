@@ -28,14 +28,14 @@
     \_ [WARNING] Time Offset: Value "0.02s" is greater than threshold "0.01s"
     \_ [OK] Time Service: Running
     | 'time_offset'=0.02s;0.01;0.02 'time_service'=4;;4 
-	0
+    0
 .EXAMPLE
     PS> Invoke-IcingaCheckTimeSync -Server 'time.versatel.de' -TimeOffset 50ms -Warning 10ms -Critical 20ms -Verbosity 2
     \_ [OK] Sync Status: NoLeapWarning
     \_ [OK] Time Offset: 0s
     \_ [OK] Time Service: Running
     | 'time_offset'=0s;0.01;0.02 'time_service'=4;;4 
-	1
+    1
 .LINK
     https://github.com/Icinga/icinga-powershell-plugins
 .NOTES
@@ -91,9 +91,9 @@ function Invoke-IcingaCheckTimeSync()
     $CheckPackage = New-IcingaCheckPackage `
 			-Name 'Time Package' `
 			-Checks @(
-                                $OffsetCheck,
-				$TimeCheck,
-				$SyncStatus
+                            $OffsetCheck,
+                            $TimeCheck,
+                            $SyncStatus
 			) `
 			-OperatorAnd `
 			-Verbose $Verbosity;
