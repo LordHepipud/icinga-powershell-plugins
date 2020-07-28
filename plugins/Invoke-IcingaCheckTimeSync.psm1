@@ -53,7 +53,7 @@ function Invoke-IcingaCheckTimeSync()
 	[int]$Timeout          = 10,
 	[switch]$IPV4          = $FALSE,
 	[int]$Port             = 123,
-	[switch]$NoPerData     = $FALSE,
+	[switch]$NoPerfData    = $FALSE,
 	[ValidateSet(0, 1, 2)]
 	[int]$Verbosity        = 0
    );
@@ -98,5 +98,5 @@ function Invoke-IcingaCheckTimeSync()
 			-OperatorAnd `
 			-Verbose $Verbosity;
 
-    return (New-IcingaCheckResult -Check $CheckPackage -NoPerfData $NoPerData -Compile);
+    return (New-IcingaCheckResult -Check $CheckPackage -NoPerfData $NoPerfData -Compile);
 }
