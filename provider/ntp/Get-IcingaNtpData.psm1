@@ -1,11 +1,11 @@
 function Get-IcingaNtpData()
 {
-    param(
-	[string]$Server,
-	[int]$Port       = 123,
-	$TimeOffset      = 0,
-	[int]$Timeout    = 10,
-	[switch]$IPV4    = $FALSE
+    param (
+        [string]$Server,
+        [int]$Port      = 123,
+        $TimeOffset     = 0,
+        [int]$Timeout   = 10,
+        [switch]$IPV4   = $FALSE
     );
 
     if ([string]::IsNullOrEmpty($Server)) {

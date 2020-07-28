@@ -46,16 +46,16 @@
 function Invoke-IcingaCheckTimeSync()
 {
     param(
-	[string]$Server,
-	$TimeOffset            = 0,
-	$Warning               = $null,
-	$Critical              = $null,
-	[int]$Timeout          = 10,
-	[switch]$IPV4          = $FALSE,
-	[int]$Port             = 123,
-	[switch]$NoPerfData    = $FALSE,
-	[ValidateSet(0, 1, 2)]
-	[int]$Verbosity        = 0
+        [string]$Server,
+        $TimeOffset         = 0,
+        $Warning            = $null,
+        $Critical           = $null,
+        [int]$Timeout       = 10,
+        [switch]$IPV4       = $FALSE,
+        [int]$Port          = 123,
+        [switch]$NoPerfData = $FALSE,
+        [ValidateSet(0, 1, 2)]
+        [int]$Verbosity     = 0
    );
 
     $TimeData    = Get-IcingaNtpData -Server $Server -Port $Port -TimeOffset $TimeOffset -Timeout $Timeout -IPV4:$IPV4;
@@ -64,39 +64,39 @@ function Invoke-IcingaCheckTimeSync()
     $Critical    = ConvertTo-SecondsFromIcingaThresholds $Critical;
 
     $OffsetCheck = New-IcingaCheck `
-		    -Name 'Time Offset' `
-		    -Value (
-		        $TimeData.CalculatedOffset
-		    ) `
-		    -Unit 's';
+        -Name 'Time Offset' `
+        -Value (
+            $TimeData.CalculatedOffset
+        ) `
+        -Unit 's';
 
     $OffsetCheck.WarnOutOfRange($Warning).CritOutOfRange($Critical) | Out-Null;
 
     $TimeCheck = New-IcingaCheck `
-		    -Name 'Time Service' `
-		    -Value $TimeService.configuration.Status.raw `
-		    -ObjectExists $TimeService `
-		    -Translation $ProviderEnums.ServiceStatusName;
+        -Name 'Time Service' `
+        -Value $TimeService.configuration.Status.raw `
+        -ObjectExists $TimeService `
+        -Translation $ProviderEnums.ServiceStatusName;
 
     $TimeCheck.CritIfNotMatch($ProviderEnums.ServiceStatus.Running) | Out-Null;
 
     $SyncStatus = New-IcingaCheck `
-		    -Name 'Sync Status' `
-		    -Value $TimeData.SyncStatus `
-		    -Translation $ProviderEnums.TimeSyncStatusName `
-		    -NoPerfData;
+        -Name 'Sync Status' `
+        -Value $TimeData.SyncStatus `
+        -Translation $ProviderEnums.TimeSyncStatusName `
+        -NoPerfData;
 
     $SyncStatus.CritIfMatch($ProviderEnums.TimeSyncStatus.ClockNotSynhronized) | Out-Null;
 
     $CheckPackage = New-IcingaCheckPackage `
-			-Name 'Time Package' `
-			-Checks @(
-                            $OffsetCheck,
-                            $TimeCheck,
-                            $SyncStatus
-			) `
-			-OperatorAnd `
-			-Verbose $Verbosity;
+        -Name 'Time Package' `
+        -Checks @(
+            $OffsetCheck,
+            $TimeCheck,
+            $SyncStatus
+        ) `
+        -OperatorAnd `
+        -Verbose $Verbosity;
 
     return (New-IcingaCheckResult -Check $CheckPackage -NoPerfData $NoPerfData -Compile);
 }
